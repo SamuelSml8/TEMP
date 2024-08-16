@@ -1,8 +1,18 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
+import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
-  await app.listen(3000);
+  const config = new DocumentBuilder()
+    .setTitle('Verscap')
+    .setDescription('The verscap API description here...')
+    .setVersion('1.0')
+    .addTag('Verscap | The new way liberty')
+    .build();
+  const document = SwaggerModule.createDocument(app, config);
+  SwaggerModule.setup('api-doc', app, document);
+  await app.listen(process.env.PORT || 4321);
 }
+
 bootstrap();
